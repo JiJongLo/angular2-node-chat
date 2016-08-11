@@ -2,7 +2,7 @@ import {Component} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 import {HeaderComponent} from './header.component';
 import {MessagesComponent} from './messages/messages.component';
-import {AuthenticationComponent} from './auth/autontication.component';
+import {AuthenticationComponent} from './auth/authentication.component';
 @Component({
     selector: 'my-app',
     directives: [HeaderComponent, ROUTER_DIRECTIVES],
