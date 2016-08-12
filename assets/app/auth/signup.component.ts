@@ -1,5 +1,5 @@
 import  {Component, OnInit} from 'angular2/core';
-import {FormBuilder, ControlGroup, Validators} from "angular2/common";
+import {FormBuilder, ControlGroup, Validators, Control} from "angular2/common";
 
 @Component({
     selector : 'signup-component',
@@ -37,8 +37,17 @@ export class SignUpComponent implements OnInit{
        this.myForm = this._fb.group({
            firstName : ['', Validators.required],
            lastName : ['', Validators.required],
-           email : ['', Validators.required],
+           email: ['', Validators.compose([
+               Validators.required,
+               this.isMail
+           ])],
            password : ['', Validators.required],
        })
+    }
+
+    private isMail(control:Control):{[s:string]:boolean} {
+        if (!/[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?\./.test(control.value)) {
+            return {invalidMail: true}
+        }
     }
 }
