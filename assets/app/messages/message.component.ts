@@ -30,8 +30,8 @@ import {Message} from './message';
                      {{message.username}}
                  </div>
                  <div class="config">
-                    <a href="#" (click)="onEdit()">Editor</a>
-                    <a href="#" (click)="onDelete()">Delete</a>
+                    <a (click)="onEdit()">Edit</a>
+                    <a (click)="onDelete()">Delete</a>
                  </div>
              </footer>
        </article>
@@ -45,6 +45,9 @@ export class MessageComponent {
        this._messageService.editMessage(this.message);
     }
     onDelete() {
-        this._messageService.deleteMessage(this.message);
+        this._messageService.deleteMessage(this.message).subscribe(
+            data => console.log(data),
+            error => console.error(error)
+        );
     }
 }

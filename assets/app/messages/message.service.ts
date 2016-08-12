@@ -1,6 +1,6 @@
 import {Message} from './message';
 import {Http, Headers} from 'angular2/http';
-import {Injectable} from 'angular2/core';
+import {Injectable, EventEmitter} from 'angular2/core';
 import 'rxjs/Rx';
 import {Observable} from 'rxjs/Observable';
 @Injectable()
@@ -8,7 +8,7 @@ export class  MessageService {
     constructor(private  _http:Http) {
     }
     messages : Message[] = [];
-
+    messageIsEdit = new EventEmitter<Message>()
     addMessage(message: Message){
         const body = JSON.stringify(message);
         const headers = new Headers({'Content-Type': 'application/json'});
@@ -37,12 +37,24 @@ export class  MessageService {
             .catch(error => Observable.throw(error.json()));
     }
     editMessage(message: Message) {
-        this.messages[this.messages.indexOf(message)] = new Message('Edited ', null , 'Dummy')
+        this.messageIsEdit.emit(message)
     }
 
+    updateMessage(message:Message) {
+        const body = JSON.stringify(message);
+        const headers = new Headers({'Content-Type': 'application/json'});
+        return this._http.patch(`http://localhost:3000/message/${message.messageId}`, body, {
+            headers: headers
+        })
+            .map(response => response.json())
+            .catch(error => Observable.throw(error.json()));
+    }
 
     deleteMessage(message: Message) {
         this.messages.splice(this.messages.indexOf(message), 1);
+        return this._http.delete(`http://localhost:3000/message/${message.messageId}`)
+            .map(response => response.json())
+            .catch(error => Observable.throw(error.json()));
 
     }
 }
