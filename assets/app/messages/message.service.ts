@@ -1,14 +1,40 @@
-import {Message} from './message'
+import {Message} from './message';
+import {Http, Headers} from 'angular2/http';
+import {Injectable} from 'angular2/core';
+import 'rxjs/Rx';
+import {Observable} from 'rxjs/Observable';
+@Injectable()
 export class  MessageService {
+    constructor(private  _http:Http) {
+    }
     messages : Message[] = [];
 
     addMessage(message: Message){
-        this.messages.push(message);
-        console.log(this.messages)
+        const body = JSON.stringify(message);
+        const headers = new Headers({'Content-Type': 'application/json'});
+        return this._http.post('http://localhost:3000/message', body, {
+            headers: headers
+        })
+            .map(response => {
+                const data = response.json().obj;
+                let message = new Message(data.content, data._id, 'Dumy', null);
+                return message;
+            })
+            .catch(error => Observable.throw(error.json()));
     }
 
     getMessages() {
-        return this.messages;
+        return this._http.get('http://localhost:3000/message')
+            .map(response => {
+                const data = response.json().obj;
+                let objs:any[] = [];
+                for (let i = 0; i < data.length; i++) {
+                    let message = new Message(data[i].content, data[i]._id, 'Dummy', null);
+                    objs.push(message);
+                }
+                return objs;
+            })
+            .catch(error => Observable.throw(error.json()));
     }
     editMessage(message: Message) {
         this.messages[this.messages.indexOf(message)] = new Message('Edited ', null , 'Dummy')

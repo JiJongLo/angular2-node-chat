@@ -4,4 +4,5 @@ import {AppComponent} from "./app.component";
 import {MessageService} from "./messages/message.service";
 import {ROUTER_PROVIDERS, LocationStrategy, HashLocationStrategy} from "./angular2/router";
 import {provide} from "angular2/core";
-bootstrap(AppComponent, [MessageService, ROUTER_PROVIDERS, provide(LocationStrategy, {useClass: HashLocationStrategy})]);
+import {HTTP_PROVIDERS} from "angular2/http";
+bootstrap(AppComponent, [MessageService, ROUTER_PROVIDERS, provide(LocationStrategy, {useClass: HashLocationStrategy}), HTTP_PROVIDERS]);
