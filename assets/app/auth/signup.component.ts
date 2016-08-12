@@ -7,15 +7,15 @@ import {FormBuilder, ControlGroup, Validators} from "angular2/common";
      <section class="col-md-8 col-md-offset-2">
          <form [ngFormModel]="myForm" (ngSubmit)="onSubmit()">
            <div class="form-group">
-             <label for="firstName">first Name</label>
+             <label for="firstName">First Name</label>
              <input [ngFormControl]="myForm.find('firstName')" type="text" id="firstName" class="form-control">
            </div>
              <div class="form-group">
-             <label for="lastName">"last Name</label>
+             <label for="lastName">Last Name</label>
              <input type="text"  [ngFormControl]="myForm.find('lastName')" id="lastName" class="form-control">
            </div>
              <div class="form-group">
-             <label for="email">Email</label>
+             <label for="email">Mail</label>
              <input type="email"  [ngFormControl]="myForm.find('email')" id="email" class="form-control">
            </div>
              <div class="form-group">
