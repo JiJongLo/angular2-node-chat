@@ -39,7 +39,7 @@ export class SignUpComponent implements OnInit{
             this.myForm.value.firstName, this.myForm.value.lastName);
         this._authService.signup(user).subscribe(
             data => console.log(data),
-            error => console.error(error),
+            error => console.error(error)
         )
     }
     ngOnInit(){

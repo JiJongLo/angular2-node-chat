@@ -4,23 +4,9 @@
 const express = require('express');
 const router = express.Router();
 const Message = require('../models/message');
-router.post('/', (req, res, next)=> {
-    const message = new Message({
-        content: req.body.content
-    });
-    message.save((err, result)=> {
-        if (err) {
-            return res.status(404).json({
-                title: 'An error occurred',
-                error: err
-            })
-        }
-        res.status(201).json({
-            message: 'Saved message',
-            obj: result
-        });
-    })
-});
+const User = require('../models/user');
+const jwt = require('jsonwebtoken');
+
 router.get('/', (req, res, next)=> {
     Message.find()
         .exec((err, docs)=> {
@@ -36,6 +22,54 @@ router.get('/', (req, res, next)=> {
             });
         })
 });
+
+
+router.use('/?', (req,res,next)=>{
+
+    jwt.verify(req.query.token, 'secret', (err, decoded)=>{
+        if(err){
+            if (err) {
+                return res.status(404).json({
+                    title: 'Authorization failed',
+                    error: err
+                })
+            }
+        }
+        next();
+    })
+});
+router.post('/', (req, res, next)=> {
+    const decoded = jwt.decode(req.body.token);
+    User.findById(decoded.user._id, (err, doc)=>{
+        if (err) {
+            return res.status(404).json({
+                title: 'An error occurred',
+                error: err
+            })
+        }
+        const message = new Message({
+            content: req.body.content,
+            user : doc
+        });
+        message.save((err, result)=> {
+            if (err) {
+                return res.status(404).json({
+                    title: 'An error occurred',
+                    error: err
+                })
+            }
+           doc.messages.push(result);
+           doc.save(); 
+            res.status(201).json({
+                message: 'Saved message',
+                obj: result
+            });
+        })
+  });
+});
+
+
+
 
 router.patch('/:id', (req, res, next)=> {
     Message.findById(req.params.id, (err, doc)=> {

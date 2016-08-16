@@ -8,11 +8,15 @@ export class  MessageService {
     constructor(private  _http:Http) {
     }
     messages : Message[] = [];
-    messageIsEdit = new EventEmitter<Message>()
+    messageIsEdit = new EventEmitter<Message>();
     addMessage(message: Message){
         const body = JSON.stringify(message);
         const headers = new Headers({'Content-Type': 'application/json'});
-        return this._http.post('http://localhost:3000/message', body, {
+        let token = '';
+        console.log(token)
+        if(localStorage.getItem('token'))  token = '?token=' + localStorage.getItem('token');
+        console.log(token , !!localStorage.getItem('token'));
+        return this._http.post('http://localhost:3000/message'+ token, body, {
             headers: headers
         })
             .map(response => {

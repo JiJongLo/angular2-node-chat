@@ -3,6 +3,7 @@ import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router'
 import {SignUpComponent} from './signup.component';
 import {SignInComponent} from './signin.component';
 import {LogoutComponent} from './logout.component';
+import {AuthService} from './auth.service';
 @Component({
     selector: 'my-auth',
     directives: [ROUTER_DIRECTIVES],
@@ -20,8 +21,8 @@ import {LogoutComponent} from './logout.component';
       <nav class="col-md-8 col-md-offset-2">
          <ul class="nav nav-tabs">
              <li><a [routerLink]="['Signup']">Sign up</a></li>
-             <li><a [routerLink]="['Signin']">Sign in</a></li>
-             <li><a [routerLink]="['Logout']">Logout</a></li>
+             <li><a [routerLink]="['Signin']" *ngIf="!isLoggedIn()">Sign in</a></li>
+             <li><a [routerLink]="['Logout']" *ngIf="isLoggedIn()">Logout</a></li>
          </ul>
       </nav>
       </header>
@@ -37,5 +38,9 @@ import {LogoutComponent} from './logout.component';
     ]
 )
 export class AuthenticationComponent {
-
+   constructor(private _authService:AuthService) {}
+    
+   isLoggedIn() {
+       return this._authService.isLoggedIn()
+   }
 }
