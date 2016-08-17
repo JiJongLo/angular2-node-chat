@@ -12,10 +12,7 @@ export class  MessageService {
     addMessage(message: Message){
         const body = JSON.stringify(message);
         const headers = new Headers({'Content-Type': 'application/json'});
-        let token = '';
-        console.log(token)
-        if(localStorage.getItem('token'))  token = '?token=' + localStorage.getItem('token');
-        console.log(token , !!localStorage.getItem('token'));
+        const token = localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
         return this._http.post('http://localhost:3000/message'+ token, body, {
             headers: headers
         })

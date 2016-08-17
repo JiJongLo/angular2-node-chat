@@ -39,7 +39,7 @@ router.use('/?', (req,res,next)=>{
     })
 });
 router.post('/', (req, res, next)=> {
-    const decoded = jwt.decode(req.body.token);
+    const decoded = jwt.decode(req.query.token);
     User.findById(decoded.user._id, (err, doc)=>{
         if (err) {
             return res.status(404).json({

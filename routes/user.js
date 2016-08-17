@@ -56,7 +56,7 @@ router.post('/signin', function (req, res, next) {
         var token = jwt.sign({user: result}, 'secret', {expiresIn: 7200});
         res.status(200).json({
             message: 'Success',
-            obj: token,
+            token: token,
             userId: result._id
         })
 
