@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken');
 
 router.get('/', (req, res, next)=> {
     Message.find()
+        .populate('user', 'firstName')
         .exec((err, docs)=> {
             if (err) {
                 return res.status(404).json({
@@ -72,6 +73,7 @@ router.post('/', (req, res, next)=> {
 
 
 router.patch('/:id', (req, res, next)=> {
+    const decoded = jwt.decode(req.query.token);
     Message.findById(req.params.id, (err, doc)=> {
         if (err) {
             return res.status(404).json({
@@ -83,6 +85,12 @@ router.patch('/:id', (req, res, next)=> {
             return res.status(404).json({
                 title: 'No message found',
                 error: {message: 'Message could not be found'}
+            })
+        }
+        if (doc.user != decoded.user._id) {
+            return res.status(401).json({
+                title: 'Not Authorized',
+                error: {message: 'Message created by other user'}
             })
         }
         doc.content = req.body.content;
@@ -102,6 +110,7 @@ router.patch('/:id', (req, res, next)=> {
 });
 
 router.delete('/:id', (req, res, next)=> {
+    const decoded = jwt.decode(req.query.token);
     Message.findById(req.params.id, (err, doc)=> {
         if (err) {
             return res.status(404).json({
@@ -113,6 +122,12 @@ router.delete('/:id', (req, res, next)=> {
             return res.status(404).json({
                 title: 'No message found',
                 error: {message: 'Message could not be found'}
+            })
+        }
+        if (doc.user != decoded.user._id) {
+            return res.status(401).json({
+                title: 'Not Authorized',
+                error: {message: 'Message created by other user'}
             })
         }
         doc.remove((err, result)=> {

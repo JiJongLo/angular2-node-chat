@@ -29,7 +29,7 @@ import {Message} from './message';
                  <div class="author">
                      {{message.username}}
                  </div>
-                 <div class="config">
+                 <div class="config" *ngIf="onBelongToUser()">
                     <a (click)="onEdit()">Edit</a>
                     <a (click)="onDelete()">Delete</a>
                  </div>
@@ -49,5 +49,8 @@ export class MessageComponent {
             data => console.log(data),
             error => console.error(error)
         );
+    }
+    onBelongToUser(){
+        return localStorage.getItem('userId') == this.message.userId
     }
 }
