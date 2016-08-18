@@ -1,5 +1,6 @@
 import  { Component, Input, Output, EventEmitter } from 'angular2/core';
 import {MessageService} from './message.service';
+import {ErrorService} from '../errors/error.service';
 import {Message} from './message';
 @Component({
     selector : 'my-message',
@@ -40,14 +41,14 @@ import {Message} from './message';
 export class MessageComponent {
     @Input() message :Message;
     @Output() editClicked = new EventEmitter<string>();
-    constructor(private _messageService: MessageService){}
+    constructor(private _messageService: MessageService, private _errorService: ErrorService){}
     onEdit() {
        this._messageService.editMessage(this.message);
     }
     onDelete() {
         this._messageService.deleteMessage(this.message).subscribe(
             data => console.log(data),
-            error => console.error(error)
+            error => this._errorService.handleError(error)
         );
     }
     onBelongToUser(){

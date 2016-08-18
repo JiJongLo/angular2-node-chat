@@ -3,6 +3,7 @@ import  {Router} from 'angular2/router';
 import {FormBuilder, ControlGroup, Validators} from "angular2/common";
 import {AuthService} from "./auth.service";
 import {User} from './user';
+import {ErrorService} from '../errors/error.service';
 
 @Component({
     selector: 'signin-component',
@@ -25,7 +26,7 @@ import {User} from './user';
 export class SignInComponent implements OnInit {
     SignIn:ControlGroup;
 
-    constructor(private _fb:FormBuilder, private _authService:AuthService, private _router:Router) {
+    constructor(private _fb:FormBuilder, private _authService:AuthService, private _router:Router, private _errorService: ErrorService) {
     }
 
     onSubmit() {
@@ -36,7 +37,8 @@ export class SignInComponent implements OnInit {
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('userId', data.userId);
                     this._router.navigateByUrl('/')
-                }
+                },
+                error => this._errorService.handleError(error)
             );
     }
 
