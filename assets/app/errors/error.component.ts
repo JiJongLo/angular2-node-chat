@@ -1,8 +1,9 @@
-import {Component, OnInit} from "angular2/core";
+import {Component, OnInit} from "@angular/core";
+
 import {Error} from "./error";
 import {ErrorService} from "./error.service";
 @Component({
-    selector: 'error-window',
+    selector: 'my-error',
     template: `
         <div class="backdrop" [ngStyle]="{'display': errorDisplay}"></div>
         <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': errorDisplay}">
@@ -37,14 +38,15 @@ export class ErrorComponent implements OnInit {
     errorDisplay = 'none';
     errorData: Error;
 
-    constructor (private _errorService: ErrorService) {}
+    constructor(private errorService:ErrorService) {
+    }
 
     onErrorHandled() {
         this.errorDisplay = 'none';
     }
 
     ngOnInit() {
-        this._errorService.errorOccurred.subscribe(
+        this.errorService.errorOccurred.subscribe(
             errorData => {
                 this.errorData = errorData;
                 this.errorDisplay = 'block';

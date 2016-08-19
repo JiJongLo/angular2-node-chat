@@ -1,17 +1,15 @@
-import {Component} from 'angular2/core';
-import {MessageListComponent} from './message-list.component';
-import {MessageInputComponent} from './message-input.component';
+import {Component} from "@angular/core";
+
 @Component({
     selector: 'my-messages',
-    directives: [MessageListComponent, MessageInputComponent],
     template: `
-    <div class="row">
-      <my-message-input></my-message-input>
-    </div>
-    <div class="row">
-       <my-message-list></my-message-list>
-     </div>
-       `
+        <div class="row spacing">
+            <my-message-input></my-message-input>
+        </div>
+        <div class="row spacing">
+            <my-message-list></my-message-list>
+        </div> 
+    `
 })
 export class MessagesComponent {
 

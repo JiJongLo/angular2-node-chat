@@ -1,19 +1,22 @@
-import  {Component} from 'angular2/core';
-import {AuthService} from './auth.service';
-import {Router} from 'angular2/router';
+import {Component} from "@angular/core";
+import {Router} from "@angular/router";
+
+import {AuthService} from "./auth.service";
 
 @Component({
-    selector: 'logout-component',
-    template : `
-     <section class="col-md-8 col-md-offset-2">
-         <button class="btn btn-danger" (click)="onLogout()">Logout</button>
-       </section>
-     `
+    selector: 'my-logout',
+    template: `
+        <section class="col-md-8 col-md-offset-2">
+            <button class="btn btn-danger" (click)="onLogout()">Logout</button>
+        </section>
+    `
 })
 export class LogoutComponent {
-    constructor(private _authService:AuthService, private _router:Router) {}
+    constructor(private authService:AuthService, private router:Router) {
+    }
+
     onLogout() {
-        this._authService.logout();
-        this._router.navigate(['Signin'])
+        this.authService.logout();
+        this.router.navigate(['/auth/signin']);
     }
 }
